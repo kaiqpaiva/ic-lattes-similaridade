@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+
+# Dados pesados ou pessoais
+data/pdfs/
+data/embeddings/
+logs/
+data/brutos/
+data/markdown/
+*.zip

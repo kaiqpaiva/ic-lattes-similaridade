@@ -1,0 +1,7 @@
+requests
+beautifulsoup4
+pymupdf4llm
+numpy
+pandas
+pyarrow
+sentence-transformers
