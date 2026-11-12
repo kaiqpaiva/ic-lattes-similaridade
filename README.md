@@ -31,7 +31,7 @@ Tudo roda localmente e é gratuito. Na primeira execução, o modelo
 
 | Etapa | Comando | Saída |
 |---|---|---|
-| 1. Professores | `python main.py professores` | `data/professores.csv` |
+| 1. Professores | feita à parte, fora do código | `data/professores.csv` |
 | 2. Currículos | feita à parte (o Lattes pede captcha) | `data/brutos/*.html`, `data/pdfs/*.pdf` |
 | 3. PDF → Markdown | `python main.py converter` | `data/markdown/*.md` |
 | 4. Textos de referência | um `.md` por texto em `data/referencia/` (`python main.py referencia` lista) | |
@@ -42,21 +42,25 @@ Tudo roda localmente e é gratuito. Na primeira execução, o modelo
 `python main.py pipeline` roda as etapas 3, 5 e 6 em sequência. Cada etapa
 pula o que já foi feito (PDFs já convertidos, embeddings já calculados).
 
+O repositório é público, então nada que identifique os professores fica no git:
+nem os currículos, nem a lista de nomes e links (`data/professores.csv`), nem os
+professores esperados na validação (`data/referencia/esperados.csv`). Esses
+arquivos ficam só na máquina e no `dados_lattes.zip`.
+
 ## Rodando numa máquina com GPU (ex.: datalab)
 
 Os embeddings são a parte pesada: numa CPU fraca levam cerca de 1 hora; numa GPU
 levam poucos minutos. O código usa a GPU sozinho quando ela existe
 (`DISPOSITIVO = "auto"` em `config.py`), em meia precisão (fp16).
 
-O repositório é público, então os currículos (`data/markdown/`) ficam fora do git.
-Leve o `markdown_lattes.zip` (gerado localmente, ~1,5 MB) por Drive ou pendrive e
-descompacte em `data/markdown/`. Assim não precisa dos PDFs nem dos captchas:
+Leve o `dados_lattes.zip` (gerado localmente, ~1,5 MB, com `data/markdown/`,
+`data/professores.csv` e `data/referencia/esperados.csv`) por Drive ou pendrive e
+descompacte na raiz do projeto. Assim não precisa dos PDFs nem dos captchas:
 
 ```bash
 git clone https://github.com/kaiqpaiva/ic-lattes-similaridade.git
 cd ic-lattes-similaridade
-mkdir -p data/markdown
-unzip markdown_lattes.zip -d data/markdown
+unzip dados_lattes.zip
 python -m venv .venv
 source .venv/bin/activate        # no Windows: .venv\Scripts\activate
 ```
@@ -80,8 +84,9 @@ python main.py similaridade
 
 Com uma GPU boa, dá para aumentar `BATCH_SIZE` em `config.py` (ex.: 128) e
 testar o modelo maior trocando `MODELO_EMBEDDING` para
-`intfloat/multilingual-e5-large`. Os resultados ficam em `results/`, que pode ser
-commitado; `data/embeddings/` fica fora do git (é cache).
+`intfloat/multilingual-e5-large`. Os resultados ficam em `results/`, fora do git
+(têm nomes, notas e trechos dos currículos); `data/embeddings/` também fica fora
+(é cache).
 
 ## Decisões
 
@@ -89,7 +94,9 @@ commitado; `data/embeddings/` fica fora do git (é cache).
   precisa de OCR nem de modelos de layout; é bem mais rápido que o docling.
   Depois da conversão, só as seções oficiais do Lattes viram títulos `##`.
 - **Chunking:** por seção do Lattes; seções longas são cortadas por tamanho com
-  overlap. Identificação, Endereço e Idiomas são ignoradas.
+  overlap. Identificação, Endereço, Idiomas, Bancas e Eventos são ignoradas.
+  O nome de cada professor vem de `data/professores.csv`; sem esse arquivo, sai
+  do título `# Nome` do próprio currículo.
 - **Embeddings:** multilingual-e5 com os prefixos `query: ` (textos de referência) e
   `passage: ` (chunks). Vetores normalizados, então produto escalar = cosseno.
 - **Ranking:** ordenado pela média dos top-k chunks. Também são calculadas a
@@ -107,7 +114,6 @@ novo `.md` em `data/referencia/` e rodar `python main.py similaridade`.
 
 - `config.py`: caminhos e parâmetros
 - `main.py`: ponto de entrada, uma etapa por comando
-- `src/scraping.py`: Etapa 1
 - `src/conversao.py`: Etapa 3
 - `src/referencia.py`: Etapa 4
 - `src/chunking.py`, `src/embeddings.py`: Etapa 5

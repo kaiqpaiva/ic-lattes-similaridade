@@ -1,7 +1,6 @@
 """Ponto de entrada. Uso: python main.py <etapa>
 
 Etapas disponíveis:
-    professores   Etapa 1 - coleta nomes e links do Lattes -> data/professores.csv
     converter     Etapa 3 - data/pdfs/*.pdf -> data/markdown/*.md
     referencia    Etapa 4 - lista os textos de referência em data/referencia/*.md
     chunking      Etapa 5a - data/markdown -> data/embeddings/chunks.parquet
@@ -9,17 +8,15 @@ Etapas disponíveis:
     similaridade  Etapa 6 - um ranking por referência + results/validacao.md
     pipeline      roda converter, chunking, embeddings e similaridade em sequência
 
-A Etapa 2 (PDFs do Lattes) é feita à parte, porque o Lattes pede captcha.
+As Etapas 1 e 2 (lista de professores e PDFs do Lattes) são feitas à parte,
+fora do código: os dados são dos professores e o Lattes pede captcha.
 """
 
 import sys
 
 
 def rodar(etapa):
-    if etapa == "professores":
-        from src.scraping import etapa_professores
-        etapa_professores()
-    elif etapa == "converter":
+    if etapa == "converter":
         from src.conversao import etapa_converter
         etapa_converter()
     elif etapa == "referencia":

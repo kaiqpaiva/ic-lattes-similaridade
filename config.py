@@ -15,7 +15,7 @@ LOGS_DIR = RAIZ / "logs"
 RESULTS_DIR = RAIZ / "results"
 
 # Arquivos
-PROFESSORES_CSV = DATA_DIR / "professores.csv"
+PROFESSORES_CSV = DATA_DIR / "professores.csv"   # opcional, fora do git (nome,link_lattes)
 ESPERADOS_CSV = REFERENCIA_DIR / "esperados.csv"   # professores esperados por referência (validação)
 CONVERSAO_LOG = LOGS_DIR / "conversao.log"
 CHUNKS_PARQUET = EMBEDDINGS_DIR / "chunks.parquet"
@@ -23,12 +23,6 @@ EMBEDDINGS_NPY = EMBEDDINGS_DIR / "embeddings_chunks.npy"
 EMBEDDINGS_INFO = EMBEDDINGS_DIR / "embeddings_info.json"
 REFERENCIAS_EMB_DIR = EMBEDDINGS_DIR / "referencias"   # um .npy por texto de referência
 VALIDACAO_MD = RESULTS_DIR / "validacao.md"
-
-# Etapa 1
-URL_CORPO_DOCENTE = (
-    "https://www.mackenzie.br/graduacao/sao-paulo-higienopolis/"
-    "ciencia-da-computacao/corpo-docente"
-)
 
 # Etapa 5 - chunking
 CHUNK_TAMANHO = 1200   # em caracteres (~300 tokens; o e5 aceita até 512)

@@ -90,12 +90,28 @@ def chunkar_markdown(markdown, tamanho, overlap, secoes_ignoradas):
 
 
 def mapa_nomes():
-    """arquivo (ex.: 'ana_claudia_rossi') -> nome como está no CSV."""
+    """arquivo (ex.: 'ana_claudia_rossi') -> nome como está no CSV.
+
+    O CSV é opcional (fica fora do git). Sem ele, o mapa vem vazio e o nome
+    sai do próprio markdown (ver nome_do_markdown).
+    """
     mapa = {}
-    with open(config.PROFESSORES_CSV, newline="", encoding="utf-8") as arquivo:
-        for linha in csv.DictReader(arquivo):
-            mapa[nome_arquivo(linha["nome"])] = linha["nome"]
+    if config.PROFESSORES_CSV.exists():
+        with open(config.PROFESSORES_CSV, newline="", encoding="utf-8") as arquivo:
+            for linha in csv.DictReader(arquivo):
+                mapa[nome_arquivo(linha["nome"])] = linha["nome"]
     return mapa
+
+
+def nome_do_markdown(markdown, padrao):
+    """Nome do professor a partir da linha '# Nome' do markdown; se não houver, usa o padrão."""
+    nome = padrao
+    encontrado = False
+    for linha in markdown.splitlines():
+        if not encontrado and linha.startswith("# "):
+            nome = linha[2:].strip()
+            encontrado = True
+    return nome
 
 
 def etapa_chunking():
@@ -105,8 +121,11 @@ def etapa_chunking():
     linhas = []
     for caminho_md in sorted(config.MARKDOWN_DIR.glob("*.md")):
         arquivo = caminho_md.stem
-        professor = nomes.get(arquivo, arquivo)
         markdown = caminho_md.read_text(encoding="utf-8")
+        if arquivo in nomes:
+            professor = nomes[arquivo]
+        else:
+            professor = nome_do_markdown(markdown, arquivo)
         chunks = chunkar_markdown(
             markdown, config.CHUNK_TAMANHO, config.CHUNK_OVERLAP, config.SECOES_IGNORADAS
         )

@@ -9,3 +9,8 @@ logs/
 data/brutos/
 data/markdown/
 *.zip
+
+# Nomes e links dos professores (ficam só na máquina e no zip)
+data/professores.csv
+data/referencia/esperados.csv
+results/
