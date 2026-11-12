@@ -1,0 +1,1 @@
+Pesquisa em educação matemática: o ensino de geometria na educação básica e na formação de professores, com a abordagem da etnomatemática para valorizar os saberes matemáticos de diferentes grupos culturais. O projeto analisa práticas em sala de aula, materiais didáticos e o uso de tecnologias digitais no ensino e na aprendizagem de matemática.

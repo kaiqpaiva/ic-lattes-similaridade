@@ -1,0 +1,1 @@
+Pesquisa em visão computacional e aprendizado profundo: segmentação e classificação de imagens com redes neurais convolucionais e transformers de visão. O trabalho compara arquiteturas de deep learning com métodos clássicos de processamento de imagens baseados em equações diferenciais parciais e aplica os modelos em imagens médicas e de sensoriamento remoto.
