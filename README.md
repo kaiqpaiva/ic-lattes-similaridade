@@ -47,7 +47,7 @@ nem os currículos, nem a lista de nomes e links (`data/professores.csv`), nem o
 professores esperados na validação (`data/referencia/esperados.csv`). Esses
 arquivos ficam só na máquina e no `dados_lattes.zip`.
 
-## Rodando numa máquina com GPU (ex.: datalab)
+## Rodando numa máquina com GPU
 
 Os embeddings são a parte pesada: numa CPU fraca levam cerca de 1 hora; numa GPU
 levam poucos minutos. O código usa a GPU sozinho quando ela existe
